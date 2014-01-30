@@ -1,0 +1,23 @@
+/*
+Creates a connection to the database
+*/
+
+var fs = require("fs");
+var request = require('request');
+var mysql = require('mysql'); //https://github.com/felixge/node-mysql
+
+module.exports = {
+
+    //creates and returns a mysql DB connection
+    create: function() {
+        var pool = mysql.createPool({
+            host: '111.111.111.111',
+            user: 'username',
+            password: 'pass',
+            database: 'database-name'
+        });
+        return pool
+
+    }
+
+}
