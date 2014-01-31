@@ -11,17 +11,54 @@ var srHeaderImgs = {}
 //var srHeaderImgsJson = '/tmp/my.json';
 var srHeaderImgsJson = '../public/data/TMPsubredditList.json';
 var currentlyGenerating = false //so we wont try generating 2 at once
-
+var count = 1;
 /*
 
 You will need to refactor this after you move to live
 
 */
 
-//to reisze all images in a directory   convert '*.jpg[165x]' %03d.jpg
+//to reisze all images in a directory.   convert '*.jpg[165x]' %03d.jpg
+
+//to convert to jpg.   mogrify -format jpg *.jpg  (files are forced to be named .jpg even tho they are png)
 
 module.exports = {
+	generateFeaturedJson: function() {
 
+		pool.getConnection(function(err, connection) {
+			//select * from status where active=1 ORDER BY priceOne desc
+			connection.query("SELECT * FROM category_img,   wp_ekwgsx_terms WHERE term_id=cat_id  and good='1' order by inserted asc ", function(err, rows) {
+				if (err) {
+					console.log(err.message)
+					//res.send(400, err.message)
+					return;
+				}
+				var featuredJson = []
+				var featuredFilename = '../public/data/featured.json'
+				//console.log("rows=", rows);
+
+				connection.release();
+				rows.forEach(function(row) {
+					//var filename = 'large-images/' + row.slug + '.jpg'
+					//console.log(row)
+					featuredJson.push({
+						url: row.picurl,
+						title: row.title
+					});
+
+				})
+
+				fs.writeFile(featuredFilename, JSON.stringify(featuredJson, null, 4), function(err) {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log("JSON saved to " + featuredFilename);
+					}
+				});
+
+			});
+		});
+	},
 	getAllFeatured: function() {
 
 		pool.getConnection(function(err, connection) {
@@ -46,11 +83,16 @@ module.exports = {
 				})
 
 				var builder = new Builder({
-					outputDirectory: '../server/sprites/',
+					outputDirectory: 'sprites/',
 					outputImage: 'sprite.png',
 					outputCss: 'sprite.css',
 					selector: '.sprite',
 					images: images
+				});
+
+				builder.addConfiguration("legacy", {
+					pixelRatio: 0.3,
+					//outputImage: 'sprite.png'
 				});
 
 				builder.build(function() {
@@ -75,10 +117,10 @@ module.exports = {
 				var images = []
 				//self.download(rows[2].picurl, rows[2].slug);
 				connection.release();
-				var count = 1;
+				count = 1;
 				rows.forEach(function(row) {
-					self.download(row.picurl, row.slug, count * 4000);
-					count++;
+					self.download(row.picurl, row.slug, count * 3000);
+
 				})
 
 			});
@@ -87,35 +129,41 @@ module.exports = {
 
 	download: function(uri, slug, timeout) {
 		try {
-			setTimeout(function() {
-				//console.log('adding ', slug, timeout, uri)
-				request.head(uri, function(err, res, body) {
+			var filename = 'large-images/' + slug + '.jpg'
+			fs.exists(filename, function(exists) {
+				if (exists) {
+					//the image exists
+				} else {
+					count++;
 
-					if (typeof res !== 'undefined' && err === null) {
-						//console.log('content-type:', res.headers['content-type']);
-						//console.log('content-length:', res.headers['content-length']);
-						var contentType = res.headers['content-type']
+					setTimeout(function() {
+						//console.log('adding ', slug, timeout, uri)
 
-						//var extension = '.' + contentType.replace('image/', '')
+						request.head(uri, function(err, res, body) {
 
-						if (contentType.indexOf('html') == -1) {
-							var filename = 'large-images/' + slug + '.jpg'
-							//request(uri).pipe(fs.createWriteStream('large-images/' + slug + extension));
+							if (typeof res !== 'undefined' && err === null) {
+								//console.log('content-type:', res.headers['content-type']);
+								//console.log('content-length:', res.headers['content-length']);
+								var contentType = res.headers['content-type']
 
-							fs.exists(filename, function(exists) {
-								if (exists) {
-									//the image exists
-								} else {
+								//var extension = '.' + contentType.replace('image/', '')
+
+								if (contentType.indexOf('html') == -1) {
+
+									//request(uri).pipe(fs.createWriteStream('large-images/' + slug + extension));
+
 									request(uri).pipe(fs.createWriteStream(filename));
-								}
-							});
 
-						}
-					}
-				}).on('error', function(e) {
-					console.log("Error: " + "\n" + e.message);
-				});
-			}, timeout)
+								}
+							}
+						}).on('error', function(e) {
+							console.log("Error: " + "\n" + e.message);
+						});
+					}, timeout)
+
+				}
+			});
+
 		} catch (e) {
 			console.log('failed to get ', slug)
 		}

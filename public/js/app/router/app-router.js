@@ -7,18 +7,14 @@ define(['App', 'underscore', 'backbone', 'marionette'],
 
             },
             routes: {
-                'foo/:bar(/)': 'foo',
+                '(/)': 'index',
                 'foo2/:bar2(/)': 'foo2'
             },
 
-            foo: function(bar) {
+            index: function(bar) {
 
-                require(['view/foo'], function(FooView) {
-
-                    App.mainRegion.show(new FooView({
-                        varOne: 'something something darkside',
-                        varTwo: bar || 'bar not set'
-                    }));
+                require(['view/index'], function(IndexView) {
+                    App.mainRegion.show(new IndexView());
                 })
             },
             foo2: function(bar2) {
