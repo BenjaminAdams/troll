@@ -2,3 +2,15 @@
 #featuredListing {
     width:100%;
 }
+
+.listing {
+background-color: #FFEBDE;
+list-style-type:none;
+}
+
+.listing li {
+    width:200px;
+    height:200px;
+    padding:5px;
+    float:left;
+}

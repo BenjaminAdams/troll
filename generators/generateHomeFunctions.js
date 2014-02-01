@@ -40,10 +40,13 @@ module.exports = {
 				connection.release();
 				rows.forEach(function(row) {
 					//var filename = 'large-images/' + row.slug + '.jpg'
+					var filename = "http://troll.me/images/" + row.slug + '/thumb.jpg'
 					//console.log(row)
 					featuredJson.push({
-						url: row.picurl,
+						//url: row.picurl,
+						url: filename,
 						title: row.title
+
 					});
 
 				})
