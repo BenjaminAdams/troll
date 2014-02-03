@@ -6,6 +6,9 @@ var express = require("express"),
     server = module.exports = express();
 var fs = require("fs");
 //var request = require('request');
+var db = require('../server/db');
+var pool = db.create()
+var posts = require('./posts')(pool)
 
 // SERVER CONFIGURATION
 // ====================
@@ -29,9 +32,9 @@ server.configure(function() {
     server.use(server.router);
 });
 
-// server.get('/api', function(req, res) {
-//     api.get(res, req)
-// });
+server.get('/featured.json', function(req, res) {
+    posts.getAllFeatured(res, req)
+});
 // server.post('/api', function(req, res) {
 //     api.post(res, req)
 // });

@@ -19,6 +19,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/featuredPost'],
 				//this.model = new Backbone.Model({
 				//bar: data.varTwo
 				//})
+
 				this.rendered = false
 				App.on('testIfInViewPort', this.amIInView)
 
@@ -38,7 +39,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/featuredPost'],
 					//console.log(bounds)
 
 					if (top + 1200 > bounds.top) { //show img if its in the viewport
-						console.log(this.model.get('url'))
+						//console.log(this.model.get('url'))
 						//console.log(top, ' > ', bounds.top)
 
 						this.ui.featuredImg.attr('src', this.model.get('url'))

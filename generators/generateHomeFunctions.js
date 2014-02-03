@@ -23,6 +23,7 @@ You will need to refactor this after you move to live
 //to convert to jpg.   mogrify -format jpg *.jpg  (files are forced to be named .jpg even tho they are png)
 
 module.exports = {
+
 	generateFeaturedJson: function() {
 
 		pool.getConnection(function(err, connection) {
