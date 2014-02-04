@@ -16,9 +16,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/featuredPost'],
 				_.bindAll(this);
 				this.model = data.model
 				this.url = this.model.get('url')
-				//this.model = new Backbone.Model({
-				//bar: data.varTwo
-				//})
 
 				this.rendered = false
 				App.on('testIfInViewPort', this.amIInView)

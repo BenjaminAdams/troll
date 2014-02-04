@@ -35,9 +35,9 @@ server.configure(function() {
 server.get('/featured.json', function(req, res) {
     posts.getAllFeatured(res, req)
 });
-// server.post('/api', function(req, res) {
-//     api.post(res, req)
-// });
+server.get('/meme/:slug.json', function(req, res) {
+    posts.getOne(res, req)
+});
 
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {

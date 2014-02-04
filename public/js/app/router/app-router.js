@@ -8,7 +8,8 @@ define(['App', 'underscore', 'backbone', 'marionette'],
             },
             routes: {
                 '(/)': 'index',
-                'foo2/:bar2(/)': 'foo2'
+                'meme/:slug(/)': 'meme', //category view
+                'meme/:slug/:page(/)': 'meme'
             },
 
             index: function(bar) {
@@ -17,13 +18,13 @@ define(['App', 'underscore', 'backbone', 'marionette'],
                     App.mainRegion.show(new IndexView());
                 })
             },
-            foo2: function(bar2) {
+            meme: function(slug, page) {
 
-                require(['view/foo2'], function(FooView2) {
+                require(['view/meme'], function(MemeView) {
 
-                    App.mainRegion.show(new FooView2({
-                        varOne: 'something something darkside',
-                        varTwo: bar2 || 'bar not set'
+                    App.mainRegion.show(new MemeView({
+                        slug: slug,
+                        page: page || 1
                     }));
                 })
             },
