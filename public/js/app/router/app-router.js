@@ -1,10 +1,10 @@
-define(['App', 'underscore', 'backbone', 'marionette'],
-    function(App, _, Backbone, Marionette) {
+define(['App', 'underscore', 'backbone', 'marionette', 'view/header'],
+    function(App, _, Backbone, Marionette, HeaderView) {
 
         var AppRouter = Backbone.Marionette.AppRouter.extend({
             initialize: function(options) {
                 //only runs once
-
+                App.headerRegion.show(new HeaderView())
             },
             routes: {
                 '(/)': 'index',

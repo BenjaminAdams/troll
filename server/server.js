@@ -39,6 +39,10 @@ server.get('/meme/:slug.json', function(req, res) {
     posts.getOne(res, req)
 });
 
+server.get('/captions/:cat_id/:sortField/:sortOrder/:after.json', function(req, res) {
+    posts.getCaptions(res, req)
+});
+
 //handles all other requests to the backbone router
 server.get("*", function(req, res) {
     fs.createReadStream(__dirname + "/../public/index.html").pipe(res);

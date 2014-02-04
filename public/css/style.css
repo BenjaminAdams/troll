@@ -1,16 +1,85 @@
+#main {
+ width:100%;
+}
+
 
 #featuredListing {
     width:100%;
 }
 
-.listing {
+#featuredListing .listing {
 background-color: #FFEBDE;
 list-style-type:none;
 }
 
-.listing li {
+#featuredListing .listing li {
     width:200px;
     height:200px;
+    padding:5px;
+    float:left;
+}
+
+
+#header, #header a {
+    color:white;
+}
+
+#header .logo {
+    position:relative;
+    bottom:9px;
+}
+#header .me {
+position: relative;
+right: 8px;
+top: 10px;
+
+}
+
+.memeContainer{
+    margin:75px auto 0 auto;
+    width:1000px;
+}
+
+#captioner {
+    display: inline-block;
+    vertical-align: top;
+    width:550px;
+}
+
+#sidebar {
+    display: inline-block;
+    vertical-align: top;
+    width:310px;
+    margin-left:80px;
+}
+
+.memeMaker h1 {
+text-align: center;
+}
+
+#sidebarAd {
+    width:310px;
+    height:260px;
+    padding:5px;
+    background-color:black;
+}
+
+.fakeAd {
+    width:300px;
+    height:250px; 
+    margin:0 auto;
+    background:red;
+}
+
+.postListing ul{
+background-color: #FFEBDE;
+list-style-type:none;
+width:100%;
+}
+
+.postListing  li {
+    width:300px;
+    height:300px;
     padding:5px;
     float:left;
 }

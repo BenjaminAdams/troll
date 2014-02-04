@@ -1,5 +1,5 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/captioner', 'model/meme'],
-    function(App, $, _, Backbone, MemeTmpl, CaptionerView, MemeModel) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/captioner', 'model/meme', 'collection/captions'],
+    function(App, $, _, Backbone, MemeTmpl, CaptionerView, MemeModel, CaptionsCollection) {
         return Backbone.Marionette.Layout.extend({
             template: MemeTmpl,
             events: {
@@ -10,7 +10,7 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/ca
                 //'nextprev': '.nextprev'
             },
             regions: {
-                'postListing': '#postListing',
+                'postListing': '.postListing',
                 'captioner': '#captioner'
             },
 
@@ -29,6 +29,8 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/ca
                     success: this.showCaptioner,
                     error: this.failedMeme
                 })
+
+                this.showCaptions(0)
             },
             showCaptioner: function() {
 
@@ -36,9 +38,26 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/ca
                     model: this.model
                 }));
 
+                this.captions = new CaptionsCollection({
+                    cat_id: this.model.get('cat_id')
+                })
+
+                this.captions.fetch({
+                    success: this.showCaptions
+                })
+
             },
             failedMeme: function(e) {
                 console.log('failed: ', e)
+            },
+            showCaptions: function() {
+                var self = this
+                require(['cView/captions'], function(CaptionsCView) {
+                    self.postListing.show(new CaptionsCView({
+                        collection: self.captions
+                    }))
+                })
+
             }
 
         });

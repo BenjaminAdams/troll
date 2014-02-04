@@ -1,22 +1,21 @@
-define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/captioner'],
-    function(App, $, _, Backbone, CaptionerTmpl) {
+define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/header'],
+    function(App, $, _, Backbone, HeaderTmpl) {
         return Backbone.Marionette.Layout.extend({
-            template: CaptionerTmpl,
+            template: HeaderTmpl,
             events: {
                 //'click .tabmenu-right li': 'changeGridOption'
             },
             ui: {
-                'captioner': '#captioner',
+                //'captioner': '#captioner',
                 //'nextprev': '.nextprev'
             },
             regions: {
-                'postListing': '#postListing',
-                'captioner': '#captioner'
+                //'postListing': '#postListing',
+                //'captioner': '#captioner'
             },
 
             initialize: function(data) {
                 _.bindAll(this);
-                this.model = data.model
 
             },
             onRender: function() {

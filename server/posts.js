@@ -12,8 +12,6 @@ module.exports = function(pool) {
 
         getOne: function(res, req) {
             var slug = req.param('slug')
-            //console.log(req.values)
-            console.log('slug=', slug)
 
             pool.getConnection(function(err, connection) {
                 connection.query("SELECT title, picurl, cat_id,slug,good FROM memes WHERE slug=" + connection.escape(slug) + " limit 1 ", function(err, rows) {
@@ -31,6 +29,49 @@ module.exports = function(pool) {
             });
 
         },
+        getCaptions: function(res, req) {
+            //captions/:cat_id/:sortField/:sortOrder/:after.json
+
+            var postsPerPage = 25;
+
+            var cat_id = req.param('cat_id')
+            var sortField = req.param('sortField')
+            var sortOrder = req.param('sortOrder') || desc
+            var after = req.param('after')
+
+            var catIdStr = ''
+            var sortFieldStr = ''
+            var limitStr = " limit " + after + ', ' + postsPerPage
+
+            pool.getConnection(function(err, connection) {
+
+                //build query string based on input options
+                if (cat_id != 'null') { //we pass in a string of null
+                    catIdStr = " cat_id=" + connection.escape(cat_id)
+                }
+
+                if (sortField != 'null') {
+                    sortFieldStr = ' order by ' + sortField + ' ' + sortOrder
+                }
+
+                connection.query("SELECT ID, title, imgURL, thumb, views, cat_id,guid FROM captions WHERE " + catIdStr + sortFieldStr + limitStr, function(err, rows) {
+                    if (err) {
+                        console.log(err.message)
+                        //res.send(400, err.message)
+                        return;
+                    }
+                    var images = []
+
+                    connection.release();
+                    rows.forEach(function(row) {
+
+                    })
+
+                    res.json(200, rows)
+
+                });
+            });
+        },
         getAllFeatured: function(res, req) {
 
             pool.getConnection(function(err, connection) {
@@ -47,14 +88,7 @@ module.exports = function(pool) {
                     rows.forEach(function(row) {
                         var split = row.picurl.split("/");
                         split[5] = 'featured.jpg'
-                        row.url = split.join('/')
-
-                        // images.push({
-                        //     id: row.cat_id,
-                        //     url: picurl,
-                        //     title: row.title,
-                        //     slug: row.slug
-                        // });
+                        row.thumb = split.join('/')
 
                     })
 

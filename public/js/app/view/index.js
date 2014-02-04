@@ -24,7 +24,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/index', 'collec
 
 			},
 			loadFreaturedCV: function() {
-				console.log('in loadfeaturedcs in index')
 				this.featuredListing.show(new FeaturedCV({
 					collection: App.featuredCollection
 				}))

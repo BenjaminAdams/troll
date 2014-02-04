@@ -1,9 +1,9 @@
-define(['App', 'marionette', 'view/featuredPost'],
-    function(App, Marionette, FeaturedPostView) {
-        return Backbone.Marionette.CollectionView.extend({
-            itemView: FeaturedPostView,
+define(['App', 'backbone', 'jquery', 'view/singleCaption'],
+    function(App, Backbone, $, SingleCaptionView) {
+        //  return Backbone.Marionette.FasterCollectionView.extend({
+        return Marionette.CollectionView.extend({
+            itemView: SingleCaptionView,
             tagName: 'ul',
-            className: 'listing',
             // initialize: function() {
             //     $(window).on("scroll", this.debouncer(function(e) {
             //         console.log('I scrolled!')
