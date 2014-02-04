@@ -25,26 +25,36 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/ca
 
             },
             onRender: function() {
+                var self = this
                 this.model.fetch({
                     success: this.showCaptioner,
                     error: this.failedMeme
                 })
 
-                this.showCaptions(0)
+                //this.captions.fetch({
+                //success: this.showCaptions
+                //})
+
+                //this.showCaptions(0)
             },
             showCaptioner: function() {
-
+                var self = this
                 this.captioner.show(new CaptionerView({
                     model: this.model
                 }));
 
-                this.captions = new CaptionsCollection({
+                this.captions = new CaptionsCollection([], {
                     cat_id: this.model.get('cat_id')
                 })
 
-                this.captions.fetch({
-                    success: this.showCaptions
+                require(['cView/captions'], function(CaptionsCView) {
+                    self.postListing.show(new CaptionsCView({
+                        collection: self.captions
+                    }))
+
                 })
+
+                this.captions.fetch()
 
             },
             failedMeme: function(e) {
@@ -52,11 +62,6 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/meme', 'view/ca
             },
             showCaptions: function() {
                 var self = this
-                require(['cView/captions'], function(CaptionsCView) {
-                    self.postListing.show(new CaptionsCView({
-                        collection: self.captions
-                    }))
-                })
 
             }
 

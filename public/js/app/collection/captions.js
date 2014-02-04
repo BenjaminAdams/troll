@@ -1,6 +1,6 @@
 define(['App', 'backbone'], function(App, Backbone) {
 	return Backbone.Collection.extend({
-		initialize: function(data) {
+		initialize: function(models, data) {
 			this.cat_id = data.cat_id || 'null'
 			this.sortField = data.sortField || 'views'
 			this.sortOrder = data.sortOrder || 'desc'

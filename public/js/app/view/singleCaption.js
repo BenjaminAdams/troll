@@ -12,20 +12,22 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/singleCaption',
             },
 
             initialize: function(data) {
-                _.bindAll(this, 'amIInView');
+                _.bindAll(this);
                 var self = this
                 this.model = data.model
                 this.url = this.model.get('url')
-
                 this.renderedThis = false
-                //App.on('testIfInViewPort', this.amIInView)
-                $(window).scroll(this.checkSroll);
+                App.on('testIfInViewPort', this.amIInView)
+                //$(window).on('scroll', this.checkSroll);
+
+                //$(window).on("scroll", this.debouncer(function(e) {
+                //console.log('I scrolled!')
+                //App.trigger('testIfInViewPort', $(window).scrollTop())
+                //}));
 
             },
             onClose: function() {
-                console.log('closing view')
-                //$(window).unbind("scroll", scrollHandler);
-                //$(window).off("scroll", this.checkSroll);
+                App.off('testIfInViewPort')
             },
 
             onRender: function() {

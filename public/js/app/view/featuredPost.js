@@ -21,6 +21,10 @@ define(['App', 'jquery', 'underscore', 'backbone', 'hbs!template/featuredPost', 
 				App.on('testIfInViewPort', this.amIInView)
 
 			},
+			onClose: function() {
+				App.off('testIfInViewPort')
+			},
+
 			onRender: function() {
 				var self = this
 				setTimeout(function() {
